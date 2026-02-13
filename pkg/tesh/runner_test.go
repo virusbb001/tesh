@@ -13,7 +13,7 @@ func TestRunEmpty(t *testing.T) {
 func TestRunSuccess(t *testing.T) {
 	testRun(t, `
 # Test output on stdout
-$ echo "hello\nworld"
+$ echo -e "hello\nworld"
 >hello
 >world
 
@@ -30,6 +30,20 @@ $ cat -n
 
 # Test exit code
 42$ exit 42
+`)
+}
+
+func TestRunLangC(t *testing.T) {
+	testRun(t, `
+$ printenv LANG
+>C
+`)
+}
+
+func TestRunLangOverwrite(t *testing.T) {
+	testRun(t, `
+$ env LANG=de_DE.UTF-8 printenv LANG
+>de_DE.UTF-8
 `)
 }
 
