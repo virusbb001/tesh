@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/mickael-menu/tesh/pkg/internal/util/errors"
 )
 
 func ParseSuite(rootDir string) (TestSuiteNode, error) {
@@ -50,7 +52,7 @@ func ParseSuiteSingleFile(path string) (TestSuiteNode, error) {
 	var suite TestSuiteNode
 
 	if filepath.Ext(path) != ".tesh" {
-		return suite, nil
+		return suite, errors.New("file should be tesh file")
 	}
 
 	abs, err := filepath.Abs(path)
