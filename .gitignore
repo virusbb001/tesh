@@ -15,4 +15,4 @@
 # vendor/
 
 # Ignore `go build` output
-tesh
+/tesh
