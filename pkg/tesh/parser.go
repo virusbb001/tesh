@@ -43,6 +43,33 @@ func ParseSuite(rootDir string) (TestSuiteNode, error) {
 	return suite, err
 }
 
+// ParseSuiteSingleFile parses a single test file.
+// Unlike ParseSuite, which targets a directory, this function expects
+// a direct path to a .tesh file.
+func ParseSuiteSingleFile(path string) (TestSuiteNode, error) {
+	var suite TestSuiteNode
+
+	dir, err := os.Getwd()
+	if err != nil {
+		return suite, err
+	}
+
+	abs := filepath.Join(dir, path)
+	if filepath.Ext(path) != ".tesh" {
+		return suite, nil
+	}
+
+	test, err := ParseTestFile(abs)
+	if err != nil {
+		return suite, err
+	}
+
+	test.Name = path
+	test.Path = abs
+	suite.Tests = append(suite.Tests, test)
+	return suite, nil
+}
+
 func ParseTestFile(path string) (TestNode, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {

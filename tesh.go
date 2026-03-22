@@ -33,7 +33,16 @@ func main() {
 		exitIfErr(err)
 	}
 
-	suite, err := tesh.ParseSuite(testsDir)
+	fileInfo, err := os.Stat(testsDir)
+	exitIfErr(err)
+
+	var suite tesh.TestSuiteNode
+
+	if fileInfo.IsDir() {
+		suite, err = tesh.ParseSuite(testsDir)
+	} else {
+		suite, err = tesh.ParseSuiteSingleFile(testsDir)
+	}
 	exitIfErr(err)
 	report, err := tesh.RunSuite(suite, tesh.RunConfig{
 		Update:     update,
