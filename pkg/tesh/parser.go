@@ -49,16 +49,14 @@ func ParseSuite(rootDir string) (TestSuiteNode, error) {
 func ParseSuiteSingleFile(path string) (TestSuiteNode, error) {
 	var suite TestSuiteNode
 
-	dir, err := os.Getwd()
-	if err != nil {
-		return suite, err
-	}
-
-	abs := filepath.Join(dir, path)
 	if filepath.Ext(path) != ".tesh" {
 		return suite, nil
 	}
 
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return suite, err
+	}
 	test, err := ParseTestFile(abs)
 	if err != nil {
 		return suite, err
